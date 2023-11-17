@@ -19,6 +19,22 @@ app.use((req, res, next) => {                                         //middlewa
     console.log(`${req.method} ${req.url} ${end - start}ms`)
 })
 
+app.use(express.json()) //converts body to json
+
+app.post('/friends', (req, res) => {  // (path, (req, res))
+   if(!req.body.name) {
+        res.status(400).json({
+            error: 'no friend name'
+        }); 
+   } 
+   const newFriend = {
+    name: req.body.name,
+    id: friends.length 
+   }
+   friends.push(newFriend)
+   res.json(newFriend)
+})
+
 app.get('/', (req, res) => {  // (path, (req, res))
     res.send("hehe home page")
 })
@@ -41,9 +57,7 @@ app.get('/friends/:friendId', (req, res) => {  // (path, (req, res))
     }
 })
 
-app.post('/messages', (req, res) => {  // (path, (req, res))
-    console.log("postings")
-})
+
 
 app.listen(PORT, () => {
     console.log(`Server Started on ${PORT}...`)
